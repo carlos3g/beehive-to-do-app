@@ -1,118 +1,90 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
-import type {PropsWithChildren} from 'react';
-import React from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+import '@/lib/i18n';
+import '@/shared/services';
+import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 
 import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+  Poppins_100Thin,
+  Poppins_100Thin_Italic,
+  Poppins_200ExtraLight,
+  Poppins_200ExtraLight_Italic,
+  Poppins_300Light,
+  Poppins_300Light_Italic,
+  Poppins_400Regular,
+  Poppins_400Regular_Italic,
+  Poppins_500Medium,
+  Poppins_500Medium_Italic,
+  Poppins_600SemiBold,
+  Poppins_600SemiBold_Italic,
+  Poppins_700Bold,
+  Poppins_700Bold_Italic,
+  Poppins_800ExtraBold,
+  Poppins_800ExtraBold_Italic,
+  Poppins_900Black,
+  Poppins_900Black_Italic,
+  useFonts,
+} from '@expo-google-fonts/poppins';
+import { ThemeProvider } from 'styled-components/native';
+import { QueryClientProvider } from '@tanstack/react-query';
+import * as SplashScreen from 'expo-splash-screen';
+import { useEffect } from 'react';
+import { useColorScheme } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { Toaster } from 'sonner-native';
+import { darkTheme, lightTheme } from '@/shared/theme/theme';
+import { RootNavigator } from '@/navigation';
+import { queryClient } from '@/lib/react-query';
+import { AuthProvider } from '@/features/auth/contexts/auth.context';
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
+void SplashScreen.preventAutoHideAsync();
 
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+const App = gestureHandlerRootHOC(() => {
+  const scheme = useColorScheme();
+  const theme = scheme === 'dark' ? darkTheme : lightTheme;
+
+  const [loaded, error] = useFonts({
+    'Poppins-Thin': Poppins_100Thin,
+    'Poppins-ThinItalic': Poppins_100Thin_Italic,
+    'Poppins-ExtraLight': Poppins_200ExtraLight,
+    'Poppins-ExtraLightItalic': Poppins_200ExtraLight_Italic,
+    'Poppins-Light': Poppins_300Light,
+    'Poppins-LightItalic': Poppins_300Light_Italic,
+    'Poppins-Regular': Poppins_400Regular,
+    'Poppins-RegularItalic': Poppins_400Regular_Italic,
+    'Poppins-Medium': Poppins_500Medium,
+    'Poppins-MediumItalic': Poppins_500Medium_Italic,
+    'Poppins-SemiBold': Poppins_600SemiBold,
+    'Poppins-SemiBoldItalic': Poppins_600SemiBold_Italic,
+    'Poppins-Bold': Poppins_700Bold,
+    'Poppins-BoldItalic': Poppins_700Bold_Italic,
+    'Poppins-ExtraBold': Poppins_800ExtraBold,
+    'Poppins-ExtraBoldItalic': Poppins_800ExtraBold_Italic,
+    'Poppins-Black': Poppins_900Black,
+    'Poppins-BlackItalic': Poppins_900Black_Italic,
+  });
+
+  useEffect(() => {
+    if (loaded || error) {
+      void SplashScreen.hideAsync();
+    }
+  }, [loaded, error]);
+
+  if (!loaded && !error) {
+    return null;
+  }
+
   return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
+    <QueryClientProvider client={queryClient}>
+      <SafeAreaProvider>
+        <AuthProvider>
+          <ThemeProvider theme={theme}>
+            <RootNavigator />
+
+            <Toaster />
+          </ThemeProvider>
+        </AuthProvider>
+      </SafeAreaProvider>
+    </QueryClientProvider>
   );
-}
-
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
-}
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
 });
 
 export default App;
