@@ -9,6 +9,7 @@ export interface UpdateTaskInput {
   title?: string;
   description?: string;
   completed?: boolean;
+  completedAt?: Date | null;
 }
 
 export interface CountTasksInput {

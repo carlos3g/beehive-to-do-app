@@ -24,7 +24,7 @@ const controller = container.get<TaskController>(identifiers.TaskController);
 tasksRouter.get(
   '/',
   wrapAsyncMiddleware<ListPaginatedTasksRequest>(auth.required),
-  schemaValidationMiddleware({ querySchema: listPaginatedTasksQuerySchema }),
+  // schemaValidationMiddleware({ querySchema: listPaginatedTasksQuerySchema }),
   wrapAsyncMiddleware<ListPaginatedTasksRequest>(controller.index.bind(controller))
 );
 

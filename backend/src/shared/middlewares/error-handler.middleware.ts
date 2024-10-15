@@ -8,6 +8,9 @@ export const errorHandlerMiddleware = (err: Error | HttpException, req: Request,
     res.status(err.statusCode).json(err.response);
   }
 
+  // eslint-disable-next-line no-console
+  console.log({ err });
+
   res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
     message: 'Something went wrong',
     error: err.message || 'Unknown error',

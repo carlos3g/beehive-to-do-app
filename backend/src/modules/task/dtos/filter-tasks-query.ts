@@ -4,4 +4,6 @@ export class FilterTasksQuery {
   public description?: string;
 
   public completed?: boolean;
+
+  public userId?: number;
 }

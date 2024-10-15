@@ -26,22 +26,40 @@ export class TaskController {
   ) {}
 
   public async index(req: ListPaginatedTasksRequest, res: Response): Promise<void> {
-    res.status(HttpStatus.OK).json(await this.listPaginatedTaskUseCase.handle(req.query));
+    res.status(HttpStatus.OK).json(
+      await this.listPaginatedTaskUseCase.handle({
+        ...req.query,
+        paginate: req.query.paginate
+          ? {
+              page: req.query.paginate?.page ? Number(req.query.paginate?.page) : undefined,
+              perPage: req.query.paginate?.perPage ? Number(req.query.paginate?.perPage) : undefined,
+            }
+          : undefined,
+        filters: {
+          ...req.query.filters,
+          userId: req.auth!.userId,
+        },
+      })
+    );
   }
 
   public async show(req: GetTaskRequest, res: Response): Promise<void> {
-    res.status(HttpStatus.OK).json(await this.getTaskUseCase.handle(req.params.id));
+    res.status(HttpStatus.OK).json(await this.getTaskUseCase.handle({ id: req.params.id, userId: req.auth!.userId }));
   }
 
   public async store(req: CreateTaskRequest, res: Response): Promise<void> {
-    res.status(HttpStatus.CREATED).json(await this.createTaskUseCase.handle(req.body));
+    res.status(HttpStatus.CREATED).json(await this.createTaskUseCase.handle({ ...req.body, userId: req.auth!.userId }));
   }
 
   public async update(req: UpdateTaskRequest, res: Response): Promise<void> {
-    res.status(HttpStatus.NO_CONTENT).json(await this.updateTaskUseCase.handle({ id: req.params.id, data: req.body }));
+    res
+      .status(HttpStatus.NO_CONTENT)
+      .json(await this.updateTaskUseCase.handle({ id: req.params.id, data: req.body, userId: req.auth!.userId }));
   }
 
   public async destroy(req: DeleteTaskRequest, res: Response): Promise<void> {
-    res.status(HttpStatus.NO_CONTENT).json(await this.deleteTaskUseCase.handle(req.params.id));
+    res
+      .status(HttpStatus.NO_CONTENT)
+      .json(await this.deleteTaskUseCase.handle({ id: req.params.id, userId: req.auth!.userId }));
   }
 }

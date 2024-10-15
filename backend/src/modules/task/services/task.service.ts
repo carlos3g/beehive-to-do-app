@@ -26,6 +26,14 @@ export class TaskService implements TaskServiceContract {
       }),
     ]);
 
+    console.log({
+      data,
+      meta: getMeta({
+        total,
+        ...input.options,
+      }),
+    });
+
     return {
       data,
       meta: getMeta({

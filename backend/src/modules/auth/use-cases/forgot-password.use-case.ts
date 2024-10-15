@@ -31,9 +31,6 @@ export class ForgotPasswordUseCase implements UseCaseHandlerContract {
       userId: user.id,
     });
 
-    // eslint-disable-next-line no-console
-    console.log({ code });
-
     await this.mailerService.sendMail({
       subject: 'Reset your password',
       to: user.email,
