@@ -27,13 +27,16 @@ import { ThemeProvider } from 'styled-components/native';
 import { QueryClientProvider } from '@tanstack/react-query';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
-import { useColorScheme } from 'react-native';
+import { LogBox, useColorScheme } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Toaster } from 'sonner-native';
+import { Host } from 'react-native-portalize';
 import { darkTheme, lightTheme } from '@/shared/theme/theme';
 import { RootNavigator } from '@/navigation';
 import { queryClient } from '@/lib/react-query';
 import { AuthProvider } from '@/features/auth/contexts/auth.context';
+
+LogBox.ignoreLogs(['Warning: This synthetic event is reused for', 'Possible unhand', 'FlashList']);
 
 void SplashScreen.preventAutoHideAsync();
 
@@ -77,8 +80,9 @@ const App = gestureHandlerRootHOC(() => {
       <SafeAreaProvider>
         <AuthProvider>
           <ThemeProvider theme={theme}>
-            <RootNavigator />
-
+            <Host>
+              <RootNavigator />
+            </Host>
             <Toaster />
           </ThemeProvider>
         </AuthProvider>

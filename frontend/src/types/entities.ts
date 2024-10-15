@@ -7,7 +7,7 @@ export class Task {
 
   public description!: string;
 
-  public completed!: string;
+  public completed!: boolean;
 
   public completedAt!: Date | null;
 

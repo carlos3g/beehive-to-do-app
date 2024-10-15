@@ -39,6 +39,7 @@ export const Screen = ({
               paddingTop: top,
               paddingBottom: bottom,
               paddingHorizontal: noPaddingHorizontal ? undefined : theme.spacing.s24,
+              flex: 1,
             },
             style,
           ]}
