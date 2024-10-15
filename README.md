@@ -1,6 +1,59 @@
-Postman do projeto: https://www.postman.com/c4rlos3g/tasks/overview
+**Postman for the project:** [Postman Overview](https://www.postman.com/c4rlos3g/tasks/overview)
 
-no android (react native)
-caso o app não estiver conseguindo se conectar a api adb reverse tcp:3000 tcp:3000
+# How to Run
 
-você pode visualizar os emails enviados na url http://localhost:8025
+## Backend
+
+1. Navigate to the backend directory:
+   ```bash
+   cd backend
+   ```
+2. Create a copy of the environment variables:
+   ```bash
+   cp .env.example .env
+   ```
+3. Start the Docker containers:
+   ```bash
+   docker-compose up -d
+   ```
+4. Run the database migrations:
+   ```bash
+   npm run db:migrate
+   ```
+5. Start the development server:
+   ```bash
+   npm run dev
+   ```
+
+> You can view the sent emails at: [http://localhost:8025](http://localhost:8025)
+
+## Frontend
+
+1. Navigate to the frontend directory:
+   ```bash
+   cd frontend
+   ```
+2. Create a copy of the environment variables:
+   ```bash
+   cp .env.example .env
+   ```
+3. Install the dependencies:
+   ```bash
+   npm install
+   ```
+4. Run the app on Android:
+   ```bash
+   npm run android
+   ```
+5. Start the frontend development server:
+   ```bash
+   npm run start
+   ```
+
+# Troubleshooting
+
+If the app is unable to connect to the API, run the following command:
+
+```bash
+adb reverse tcp:3000 tcp:3000
+```

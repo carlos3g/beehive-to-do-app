@@ -5,7 +5,7 @@ services:
   #   container_name: beehive-api
   #   build:
   #     context: .
-  #   command: pnpm run start:dev
+  #   command: npm run dev
   #   tty: true
   #   working_dir: /app
   #   volumes:
@@ -14,7 +14,7 @@ services:
   #   depends_on:
   #     - postgres
   #   ports:
-  #     - '${API_PORT}:3000'
+  #     - '${BEEHIVE_PORT}:3000'
   #   networks:
   #     - beehivenetwork
 
