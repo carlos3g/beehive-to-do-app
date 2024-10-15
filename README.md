@@ -16,11 +16,15 @@
    ```bash
    docker-compose up -d
    ```
-4. Run the database migrations:
+4. Install the dependencies:
+   ```bash
+   docker-compose up -d
+   ```
+5. Run the database migrations:
    ```bash
    npm run db:migrate
    ```
-5. Start the development server:
+6. Start the development server:
    ```bash
    npm run dev
    ```
