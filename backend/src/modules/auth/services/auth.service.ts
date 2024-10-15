@@ -37,7 +37,7 @@ export class AuthService implements AuthServiceContract {
     await this.passwordChangeRequestRepository.create({
       expiresAt: DateTime.now().plus({ days: 1 }).toJSDate(),
       userId: args.userId,
-      code: this.hashService.hash(unhashedCode),
+      code: unhashedCode,
     });
 
     return {

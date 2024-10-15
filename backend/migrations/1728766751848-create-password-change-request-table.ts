@@ -7,6 +7,13 @@ export class CreatePasswordChangeRequestTable1728766751848 implements MigrationI
         name: 'password_change_requests',
         columns: [
           {
+            name: 'id',
+            type: 'int',
+            isPrimary: true,
+            isGenerated: true,
+            generationStrategy: 'increment',
+          },
+          {
             name: 'code',
             type: 'varchar',
             length: '255',

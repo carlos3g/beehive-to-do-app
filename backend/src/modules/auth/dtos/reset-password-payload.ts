@@ -1,6 +1,4 @@
 export class ResetPasswordPayload {
-  public email!: string;
-
   public code!: string;
 
   public password!: string;

@@ -14,22 +14,14 @@ export class ResetPasswordUseCase implements UseCaseHandlerContract {
   public constructor(
     @inject(identifiers.UserServiceContract) private readonly userService: UserServiceContract,
     @inject(identifiers.PasswordChangeRequestRepositoryContract)
-    private readonly passwordChangeRequestRepository: PasswordChangeRequestRepositoryContract,
-    @inject(identifiers.HashServiceContract)
-    private readonly hashService: HashServiceContract
+    private readonly passwordChangeRequestRepository: PasswordChangeRequestRepositoryContract
   ) {}
 
   public async handle(input: ResetPasswordPayload): Promise<null> {
-    const user = await this.userService.findByEmailOrFail(input.email);
-
-    const passwordChangeRequest = await this.passwordChangeRequestRepository.findFirstValidByUserId(user.id);
+    const passwordChangeRequest = await this.passwordChangeRequestRepository.findFirstValidByCode(input.code);
 
     if (!passwordChangeRequest) {
-      throw new HttpException(HttpStatus.NOT_FOUND, 'Request not found');
-    }
-
-    if (!this.hashService.compare(input.code, passwordChangeRequest.code)) {
-      throw new HttpException(HttpStatus.UNAUTHORIZED, 'Invalid credentials');
+      throw new HttpException(HttpStatus.NOT_FOUND, 'Código errado');
     }
 
     await this.passwordChangeRequestRepository.update(passwordChangeRequest.code, {

@@ -2,7 +2,7 @@ services:
   # api:
   #   restart: unless-stopped
   #   env_file: .env
-  #   container_name: echoes-api
+  #   container_name: beehive-api
   #   build:
   #     context: .
   #   command: pnpm run start:dev
@@ -18,18 +18,18 @@ services:
   #   networks:
   #     - beehivenetwork
 
-  # mailpit:
-  #   image: 'axllent/mailpit:latest'
-  #   ports:
-  #     - '${FORWARD_MAILPIT_PORT:-1025}:1025'
-  #     - '${FORWARD_MAILPIT_DASHBOARD_PORT:-8025}:8025'
-  #   networks:
-  #     - beehivenetwork
+  mailpit:
+    image: 'axllent/mailpit:latest'
+    ports:
+      - '${FORWARD_MAILPIT_PORT:-1025}:1025'
+      - '${FORWARD_MAILPIT_DASHBOARD_PORT:-8025}:8025'
+    networks:
+      - beehivenetwork
 
   postgres:
     image: postgres:10-alpine
     restart: unless-stopped
-    container_name: echoes-postgres
+    container_name: beehive-postgres
     env_file: .env
     environment:
       POSTGRES_MULTIPLE_DATABASES: ${DB_DATABASE},${DB_DATABASE}_test
