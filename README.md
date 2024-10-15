@@ -18,7 +18,7 @@
    ```
 4. Install the dependencies:
    ```bash
-   docker-compose up -d
+   npm install
    ```
 5. Run the database migrations:
    ```bash
